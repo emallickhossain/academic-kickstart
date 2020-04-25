@@ -1,0 +1,51 @@
+---
+title: Self-Driving Cars and Traffic Tickets
+author: Mallick Hossain
+date: '2018-03-06'
+slug: data-table-analysis
+draft: true
+output:
+  blogdown::html_page:
+    toc: true
+categories:
+  - R
+  - Public Finance
+  - Self-driving cars
+  - Technology
+tags: []
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#intro">Intro</a></li>
+<li><a href="#state-fines-and-forfeits-and-parking">State Fines and Forfeits and Parking</a></li>
+<li><a href="#county-fines-and-forfeits-and-parking">County Fines and Forfeits and Parking</a></li>
+</ul>
+</div>
+
+<div id="intro" class="section level1">
+<h1>Intro</h1>
+<p>Self-driving cars are a popular topic with futurists making predictions about how they will change cities, work, and our lives. Thousands of lives will be saved because self-driving cars will be much safer than distracted drivers. Parking lots will be demolished as cars can be summoned at will. Parents won’t need to get off work at 3 to pick up the kids, they can just send cars to shuttle their kids home or to after-school activites.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Busy workers can be even more productive by working during their commute, and the further away from work they live, the more productive they can be! The sky is the limit<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> and self-driving cars will change the world as we know it!</p>
+<p>Before we get too excited, let’s dial it back and think about some of the less headline-grabbing effects of self-driving cars. In particular, the tyranny of traffic and parking tickets will be over. Police officers can focus on catching real criminals and people will have one less way to slip into the vicious cycle of poverty.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> However, the question on nobody’s mind is what do self-driving cars mean for state and local budgets?<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> How dependent are state and local governments on traffic tickets and which ones will be hit hardest by the seismic shift caused by self-driving cars?</p>
+<p>Revenues from traffic tickets are notoriously difficult to obtain unless you are patient enough to file numerous Freedom of Information Act requests.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> However, I am not so patient, so I will use one of the most available sources I have at my disposal, the <a href="https://www.census.gov/govs/local/index.html">Census’ Annual Survey of State and Local Finances</a>. This is an annual survey that collects revenue, expenditure, and other financial data related to state and local budgets. They don’t break out traffic fines separately, but they are contained in the “Fines and Penalties” category (U30). Hence, my computations will be an <strong>upper bound</strong> of how reliant states and localities are on traffic ticket revenues. Let’s dig in!</p>
+</div>
+<div id="state-fines-and-forfeits-and-parking" class="section level1">
+<h1>State Fines and Forfeits and Parking</h1>
+<p>Now that I have the data in working shape, let’s go ahead and look at how much different states depend upon fines and forfeits and parking as a share of their own revenues. Most states do not generate parking revenue (and those that do generate very little as a share of total revenues). Given that states generate a lot of revenue from income and sales taxes and the only traffic fines would likely come from highway patrols, we might expect this number to be low, especially when compared with county and localities that are less likely to levy income and sales taxes. Unsurprisingly, most states generate less than 1% of their revenue through fines and forfeits, with the major exception being Florida. However, Florida notably does not have an income tax, which may contribute to this increased reliance on fines and forfeits. Granted, other states that do not have income taxes (e.g. Delaware, Wyoming, etc.) do not stand out, so there are probably other contributing factors.</p>
+</div>
+<div id="county-fines-and-forfeits-and-parking" class="section level1">
+<h1>County Fines and Forfeits and Parking</h1>
+<p>Given that most traffic tickets are likely issued by city and county police officers, maybe these are the governments that are more reliant upon those revenues. I do a similar analysis as above, but focusing on county governments to see if we can find any governments that are more dependent than the states are. Overall, counties are only moderately reliant upon fines and forfeits, but there are a few notable counties that rely upon fines and forfeits for over 20% of their revenue. These counties are likely to be affected by traffic fines.</p>
+<p>Overall, the Annual Survey only covers about half of the counties, so a fair amount are missing, but of those surveyed, there appears to be limited reliance by states and counties on fines and forfeitures for revenues. However, to the extent that non-respondent governments tend to be rural counties in the Midwest and South, there may be severe non-response bias and these governments’ reliance on fines and forfeitures may differ substantially from those governments that responded to the survey. This may be especially true given what the Atlanta Journal-Consitution found. Most of those counties around I-75 that issue a lot of tickets per capita are missing from the Census’ Survey.</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Because making the school day line up with regular work hours is too difficult, apparently.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>By the way, where’s my flying car?<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>Google “traffic fines and poverty” for heartbreaking stories of traffic tickets impoverishing families and trapping them in cycles of debt.<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>Well, nobody’s mind except Brian Fung’s at the <a href="https://www.washingtonpost.com/news/the-switch/wp/2016/01/22/how-driverless-cars-could-kill-the-speeding-ticket-and-rob-your-city/?utm_term=.ebe6909bf106">Washington Post</a><a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn5"><p>Or are particularly clever like this <a href="https://www.myajc.com/news/transportation/atlanta-ticket-traps-slow-down-pay/6JZfycaeaKQ3jYJGRxtHII/">Atlanta Journal-Constitution analysis</a><a href="#fnref5" class="footnote-back">↩</a></p></li>
+</ol>
+</div>

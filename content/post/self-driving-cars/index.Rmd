@@ -1,0 +1,139 @@
+---
+title: Self-Driving Cars and Traffic Tickets
+author: Mallick Hossain
+date: '2018-03-06'
+slug: data-table-analysis
+draft: true
+output:
+  blogdown::html_page:
+    toc: true
+categories:
+  - R
+  - Public Finance
+  - Self-driving cars
+  - Technology
+tags: []
+---
+
+# Intro
+Self-driving cars are a popular topic with futurists making predictions about how they will change cities, work, and our lives. Thousands of lives will be saved because self-driving cars will be much safer than distracted drivers. Parking lots will be demolished as cars can be summoned at will. Parents won't need to get off work at 3 to pick up the kids, they can just send cars to shuttle their kids home or to after-school activites.^[Because making the school day line up with regular work hours is too difficult, apparently.] Busy workers can be even more productive by working during their commute, and the further away from work they live, the more productive they can be! The sky is the limit^[By the way, where's my flying car?] and self-driving cars will change the world as we know it!
+
+Before we get too excited, let's dial it back and think about some of the less headline-grabbing effects of self-driving cars. In particular, the tyranny of traffic and parking tickets will be over. Police officers can focus on catching real criminals and people will have one less way to slip into the vicious cycle of poverty.^[Google "traffic fines and poverty" for heartbreaking stories of traffic tickets impoverishing families and trapping them in cycles of debt.] However, the question on nobody's mind is what do self-driving cars mean for state and local budgets?^[Well, nobody's mind except Brian Fung's at the [Washington Post](https://www.washingtonpost.com/news/the-switch/wp/2016/01/22/how-driverless-cars-could-kill-the-speeding-ticket-and-rob-your-city/?utm_term=.ebe6909bf106)] How dependent are state and local governments on traffic tickets and which ones will be hit hardest by the seismic shift caused by self-driving cars?
+
+Revenues from traffic tickets are notoriously difficult to obtain unless you are patient enough to file numerous Freedom of Information Act requests.^[Or are particularly clever like this [Atlanta Journal-Constitution analysis](https://www.myajc.com/news/transportation/atlanta-ticket-traps-slow-down-pay/6JZfycaeaKQ3jYJGRxtHII/)] However, I am not so patient, so I will use one of the most available sources I have at my disposal, the [Census' Annual Survey of State and Local Finances](https://www.census.gov/govs/local/index.html). This is an annual survey that collects revenue, expenditure, and other financial data related to state and local budgets. They don't break out traffic fines separately, but they are contained in the "Fines and Penalties" category (U30). Hence, my computations will be an **upper bound** of how reliant states and localities are on traffic ticket revenues. Let's dig in!
+
+```{r dataPrep, echo=FALSE, message=FALSE, eval=FALSE}
+# Setup
+library(data.table)
+library(plotly)
+library(stringr)
+library(readr)
+library(maps)
+
+# Downloading data
+temp <- tempfile()
+download.file("https://www2.census.gov/govs/local/2015_Individual_Unit_file.zip", temp)
+unzip(temp, files = c("Fin_Data_2015.zip", "Fin_GID_2015.zip"))
+unzip("./Fin_Data_2015.zip")
+unzip("./Fin_GID_2015.zip")
+system("rm ./*.zip")
+
+# Getting item-level finances and combining with geographic information
+finances <- setDT(read_fwf("2015FinEstDAT_08172017modp_pu.txt", 
+                           fwf_cols(id = c(1, 14), code = c(15, 17), amount = c(18, 29))))
+ref <- setDT(read_fwf("Fin_GID_2015.txt", 
+                      fwf_cols(id = c(1, 14), idName = c(15, 78), fips = c(114, 118))))
+finances <- merge(finances, ref, by = "id")
+rm(ref)
+finances[, "type" := substr(id, 3, 3)]
+
+# Dropping special districts and school districts because they don't levy traffic tickets
+finances <- finances[type %in% 0:3]
+
+# Categories for own revenues
+ownRev <- c("A01", "A03", "A09", "A10", "A12", "A16", "A18", "A21", "A36", "A44", 
+            "A45", "A50", "A56", "A59", "A60", "A61", "A80", "A81", "A87", "A89", 
+            "T01", "T09", "T10", "T11", "T12", "T13", "T14", "T15", "T16", "T19", 
+            "T20", "T21", "T22", "T23", "T24", "T25", "T27", "T28", "T29", "T40", 
+            "T41", "T50", "T51", "T53", "T99", "U01", "U11", "U20", "U21", "U30", 
+            "U40", "U41", "U50", "U95", "U99")
+
+# Focusing on own revenue sources
+finances[, "ownRev" := ifelse(code %in% ownRev, 1, 0)]
+finances <- finances[ownRev == 1]
+totalRev <- finances[, .(totalRev = sum(amount)), by = .(fips, type)]
+finances <- merge(totalRev, finances, by = c("fips", "type"))
+
+# Getting revenue shares
+finances[, "revShare" := amount / totalRev * 100]
+
+# Code U30 is the one for fines and penalties and A60 is for parking facilities
+fines <- finances[code %in% c("A60", "U30")]
+fines[, c("totalRev", "amount", "ownRev") := NULL]
+fines <- fines[, .(revShare = sum(revShare)), by = .(fips, type, id, idName)]
+finesWide <- dcast(fines, fips + id + idName ~ type, value.var = "revShare")
+setnames(finesWide, c("fips", "id", "idName", "state", "county", "city", "township"))
+```
+
+# State Fines and Forfeits and Parking
+Now that I have the data in working shape, let's go ahead and look at how much different states depend upon fines and forfeits and parking as a share of their own revenues. Most states do not generate parking revenue (and those that do generate very little as a share of total revenues). Given that states generate a lot of revenue from income and sales taxes and the only traffic fines would likely come from highway patrols, we might expect this number to be low, especially when compared with county and localities that are less likely to levy income and sales taxes. Unsurprisingly, most states generate less than 1% of their revenue through fines and forfeits, with the major exception being Florida. However, Florida notably does not have an income tax, which may contribute to this increased reliance on fines and forfeits. Granted, other states that do not have income taxes (e.g. Delaware, Wyoming, etc.) do not stand out, so there are probably other contributing factors.
+
+```{r stateMap, echo=FALSE, message=FALSE, eval=FALSE}
+# State fines map
+stateFines <- finesWide[!is.na(state)]
+ref <- data.table(idName = toupper(state.name), abb = state.abb)
+stateFines <- merge(stateFines, ref, by = "idName")
+stateFines[, "hover" := sprintf("%.2f%%", state)]
+
+g <- list(scope = "usa", projection = list(type = "albers usa"), 
+          showlakes = TRUE, lakecolor = toRGB("white"))
+
+plot_geo(stateFines, locationmode = "USA-states") %>%
+  add_trace(z = ~state, text = ~hover, locations = ~abb, color = ~state, colors = 'Purples') %>%
+  colorbar(title = "Percent") %>%
+  layout(title = "Fines and Forfeits as Percent of Own Revenues (2015)", geo = g)
+```
+
+# County Fines and Forfeits and Parking
+Given that most traffic tickets are likely issued by city and county police officers, maybe these are the governments that are more reliant upon those revenues. I do a similar analysis as above, but focusing on county governments to see if we can find any governments that are more dependent than the states are. Overall, counties are only moderately reliant upon fines and forfeits, but there are a few notable counties that rely upon fines and forfeits for over 20% of their revenue. These counties are likely to be affected by traffic fines.
+
+Overall, the Annual Survey only covers about half of the counties, so a fair amount are missing, but of those surveyed, there appears to be limited reliance by states and counties on fines and forfeitures for revenues. However, to the extent that non-respondent governments tend to be rural counties in the Midwest and South, there may be severe non-response bias and these governments' reliance on fines and forfeitures may differ substantially from those governments that responded to the survey. This may be especially true given what the Atlanta Journal-Consitution found. Most of those counties around I-75 that issue a lot of tickets per capita are missing from the Census' Survey. 
+
+```{r countyMap, echo=FALSE, message=FALSE, eval=FALSE}
+# County map
+countyFines <- finesWide[!is.na(county)]
+countyFines[, "fips" := as.integer(fips)]
+countyFines <- merge(countyFines, county.fips, by = "fips")
+countyFines[, c("region", "subregion") := tstrsplit(polyname, ",")]
+countyFines <- merge(countyFines, map_data("county"), by = c("region", "subregion"),
+                     all.y = TRUE)
+countyFines[, "countyFactor" := cut(county, breaks = c(0, 5, 10, 20, 30, 40),
+                                  labels = c("0%-5%", "5%-10%", "10%-20%", 
+                                             "20%-30%", "30%-40%"))]
+countyFines[is.na(countyFactor), "countyFactor" := "Missing"]
+countyFines[, "countyFactor" := factor(countyFactor, 
+                                       levels = c("Missing", "0%-5%", "5%-10%", 
+                                                  "10%-20%", "20%-30%", "30%-40%"))]
+
+# layout style
+blank_layer <- list(title = "", showgrid = F, showticklabels = F, zeroline = F)
+
+# plotly object
+countyFines %>% 
+  group_by(group) %>%
+  plot_ly(x = ~long, 
+          y = ~lat, 
+          color = ~countyFactor, 
+          colors = "Blues") %>%
+  add_polygons(line = list(width = 0.4)) %>%
+  add_polygons(fillcolor = 'transparent', 
+               line = list(color = 'black', width = 0.5),
+               showlegend = FALSE) %>%
+  layout(title = "Fines and Forfeits Share of Own Revenue (2015)",
+         titlefont = list(size = 12),
+         xaxis = blank_layer,
+         yaxis = blank_layer)
+system("rm *.txt")
+rm(list = ls())
+```
+

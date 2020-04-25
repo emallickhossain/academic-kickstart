@@ -2,6 +2,7 @@
 header:
   caption: ""
   image: ""
-title: Posts
-view: 2
+layout: docs
+title: Courses
 ---
+
