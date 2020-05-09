@@ -9,7 +9,8 @@ title = "Research"
 subtitle = ""
 +++
 
-[Less is More Expensive: Income Differences in Bulk Buying](/files/BulkBuyingInequality.pdf) (JOB MARKET PAPER)
+[Less is More Expensive: Income Differences in Bulk Buying](/files/BulkBuyingInequality.pdf)
+  * Media Coverage: [Chicago Booth Review](https://review.chicagobooth.edu/economics/2020/article/why-low-income-families-miss-out-bulk-buying)
 
 A World Without Borders Revisited: The Impact of Online Sales Tax Collection on Shopping and Search (draft available upon request)
 
