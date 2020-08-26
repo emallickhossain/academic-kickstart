@@ -13,6 +13,7 @@ subtitle = ""
   * Media Coverage: [Chicago Booth Review](https://review.chicagobooth.edu/economics/2020/article/why-low-income-families-miss-out-bulk-buying)
 
 [A World Without Borders Revisited: The Impact of Online Sales Tax Collection on Shopping and Search](/files/onlineShoppingAndSalesTax.pdf)
+  * Federal Reserve Bank of Philadelphia [Working Paper](https://www.philadelphiafed.org/-/media/research-and-data/publications/working-papers/2020/wp20-34.pdf)
 
 Going Off-Script: Physician License Suspensions and Primary Care Access for Medicaid Recipients (in progress) with [Emma Dean](https://emmabdean.github.io/) and [Daniel Kaliski](http://www.danielkaliski.com/)
 
