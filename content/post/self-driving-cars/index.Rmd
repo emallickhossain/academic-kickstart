@@ -20,28 +20,27 @@ Self-driving cars are a popular topic with futurists making predictions about ho
 
 Before we get too excited, let's dial it back and think about some of the less headline-grabbing effects of self-driving cars. In particular, the tyranny of traffic and parking tickets will be over. Police officers can focus on catching real criminals and people will have one less way to slip into the vicious cycle of poverty.^[Google "traffic fines and poverty" for heartbreaking stories of traffic tickets impoverishing families and trapping them in cycles of debt.] However, the question on nobody's mind is what do self-driving cars mean for state and local budgets?^[Well, nobody's mind except Brian Fung's at the [Washington Post](https://www.washingtonpost.com/news/the-switch/wp/2016/01/22/how-driverless-cars-could-kill-the-speeding-ticket-and-rob-your-city/?utm_term=.ebe6909bf106)] How dependent are state and local governments on traffic tickets and which ones will be hit hardest by the seismic shift caused by self-driving cars?
 
-Revenues from traffic tickets are notoriously difficult to obtain unless you are patient enough to file numerous Freedom of Information Act requests.^[Or are particularly clever like this [Atlanta Journal-Constitution analysis](https://www.myajc.com/news/transportation/atlanta-ticket-traps-slow-down-pay/6JZfycaeaKQ3jYJGRxtHII/)] However, I am not so patient, so I will use one of the most available sources I have at my disposal, the [Census' Annual Survey of State and Local Finances](https://www.census.gov/govs/local/index.html). This is an annual survey that collects revenue, expenditure, and other financial data related to state and local budgets. They don't break out traffic fines separately, but they are contained in the "Fines and Penalties" category (U30). Hence, my computations will be an **upper bound** of how reliant states and localities are on traffic ticket revenues. Let's dig in!
+Revenues from traffic tickets are notoriously difficult to obtain unless you are patient enough to file numerous Freedom of Information Act requests.^[Or are particularly clever like this [Atlanta Journal-Constitution analysis](https://www.myajc.com/news/transportation/atlanta-ticket-traps-slow-down-pay/6JZfycaeaKQ3jYJGRxtHII/)] However, I am not so patient, so I will use one of the most available sources I have at my disposal, the [Census' Annual Survey of State and Local Finances](https://www.census.gov/programs-surveys/gov-finances.html). This is an annual survey that collects revenue, expenditure, and other financial data related to state and local budgets. They don't break out traffic fines separately, but they are contained in the "Fines and Penalties" category (U30). Hence, my computations will be an **upper bound** of how reliant states and localities are on traffic ticket revenues. Let's dig in!
 
 ```{r dataPrep, echo=FALSE, message=FALSE, eval=FALSE}
 # Setup
 library(data.table)
-library(plotly)
+library(ggplot2)
+library(ggthemes)
 library(stringr)
 library(readr)
 library(maps)
+library(scales)
 
 # Downloading data
 temp <- tempfile()
-download.file("https://www2.census.gov/govs/local/2015_Individual_Unit_file.zip", temp)
-unzip(temp, files = c("Fin_Data_2015.zip", "Fin_GID_2015.zip"))
-unzip("./Fin_Data_2015.zip")
-unzip("./Fin_GID_2015.zip")
-system("rm ./*.zip")
+download.file("https://www2.census.gov/programs-surveys/gov-finances/tables/2018/2018_Individual_Unit_File.zip", temp)
+unzip(temp)
 
 # Getting item-level finances and combining with geographic information
-finances <- setDT(read_fwf("2015FinEstDAT_08172017modp_pu.txt", 
+finances <- setDT(read_fwf("2018FinEstDAT_08202020modp_pu.txt",
                            fwf_cols(id = c(1, 14), code = c(15, 17), amount = c(18, 29))))
-ref <- setDT(read_fwf("Fin_GID_2015.txt", 
+ref <- setDT(read_fwf("Fin_GID_2018.txt", 
                       fwf_cols(id = c(1, 14), idName = c(15, 78), fips = c(114, 118))))
 finances <- merge(finances, ref, by = "id")
 rm(ref)
@@ -72,7 +71,7 @@ fines <- finances[code %in% c("A60", "U30")]
 fines[, c("totalRev", "amount", "ownRev") := NULL]
 fines <- fines[, .(revShare = sum(revShare)), by = .(fips, type, id, idName)]
 finesWide <- dcast(fines, fips + id + idName ~ type, value.var = "revShare")
-setnames(finesWide, c("fips", "id", "idName", "state", "county", "city", "township"))
+setnames(finesWide, c("fips", "id", "idName", "share", "county", "city", "township"))
 ```
 
 # State Fines and Forfeits and Parking
@@ -80,18 +79,23 @@ Now that I have the data in working shape, let's go ahead and look at how much d
 
 ```{r stateMap, echo=FALSE, message=FALSE, eval=FALSE}
 # State fines map
-stateFines <- finesWide[!is.na(state)]
+stateFines <- finesWide[!is.na(share)]
 ref <- data.table(idName = toupper(state.name), abb = state.abb)
 stateFines <- merge(stateFines, ref, by = "idName")
-stateFines[, "hover" := sprintf("%.2f%%", state)]
+stateFines[, "state" := tolower(idName)]
 
-g <- list(scope = "usa", projection = list(type = "albers usa"), 
-          showlakes = TRUE, lakecolor = toRGB("white"))
-
-plot_geo(stateFines, locationmode = "USA-states") %>%
-  add_trace(z = ~state, text = ~hover, locations = ~abb, color = ~state, colors = 'Purples') %>%
-  colorbar(title = "Percent") %>%
-  layout(title = "Fines and Forfeits as Percent of Own Revenues (2015)", geo = g)
+states_map <- map_data("state")
+ggplot(data = stateFines, aes(map_id = state)) +
+  geom_map(aes(fill = share), map = states_map) +
+  expand_limits(x = states_map$long, y = states_map$lat) +
+  theme_tufte() +
+  labs(title = "Fines and Forfeits as Percent of Own Revenues (2018)", 
+       fill = "Share of Revenues") + 
+  scale_fill_gradient(labels = percent) +
+  theme(legend.position = "bottom", 
+        axis.line = element_blank(), axis.text.x = element_blank(),
+        axis.text.y = element_blank(), axis.ticks = element_blank(),
+        axis.title.x = element_blank(), axis.title.y = element_blank())
 ```
 
 # County Fines and Forfeits and Parking
