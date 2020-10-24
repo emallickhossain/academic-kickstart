@@ -13,7 +13,6 @@ education:
   - course: BS, Mathematics and BA, Philosophy 
     institution: University of Alabama at Birmingham
     year: 2013
-email: "hossaine@sas.upenn.edu"
 interests:
 - Consumer Finance
 - Public Economics

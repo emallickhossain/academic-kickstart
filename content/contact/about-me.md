@@ -16,4 +16,4 @@ subtitle = ""
 columns = "1"
 +++
 
-I am a PhD candidate in Economics at the University of Pennsylvania with research interests in applied microeconomics, industrial organization, public economics, and health economics. My research focuses on understanding how local economic environments affect consumer decisions. In particular, I study the reasons why low-income households are less likely to use bulk discounts to save money and how this difference affects inequality. During graduate school, I worked as a Staff Economist for President Obama’s Council of Economic Advisers and for the Census Bureau.
+I am a financial economist at the Federal Reserve Bank of Philadelphia. My research interests are in applied microeconomics, consumer finance, and public economics. Previously, I worked as a Staff Economist for President Obama’s Council of Economic Advisers and for the Census Bureau. The views expressed here are my own and do not necessarily represent the views of the Federal Reserve Bank of Philadelphia or the Federal Reserve System. 

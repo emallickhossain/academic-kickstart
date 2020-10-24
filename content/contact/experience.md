@@ -61,5 +61,14 @@ date_format = "Jan 2006"
   date_start = "2017-09-01"
   date_end = "2019-01-01"
   description = ""
+  
+[[experience]]
+  title = "Financial Economist"
+  company = "Federal Reserve Bank of Philadelphia"
+  company_url = "https://www.philadelphiafed.org/"
+  location = "Philadelphia, PA"
+  date_start = "2020-06-01"
+  date_end = ""
+  description = ""
 
 +++

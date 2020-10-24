@@ -1,0 +1,40 @@
+---
+title: FICA Taxes
+author: Mallick Hossain
+date: '2020-09-07'
+slug: fica-taxes
+categories: []
+tags: []
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2020-08-15T11:58:18-04:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<link href="/rmarkdown-libs/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/anchor-sections/anchor-sections.js"></script>
+
+
+<p>Federal income tax rates <em>decrease</em> once you make more than $<span class="math inline">\(137,700\)</span>!<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Payroll taxes are a fact of life, but one of those taxes often gets less attention than the rest: FICA.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> As of 2020, employees contribute 6.2% of their wages to Social Security and 1.45% to Medicare. However, the 6.2% rates apply only to wages up to the “Social Security wage base” ($<span class="math inline">\(137,700\)</span> in 2020). This means that 6.2 cents of every dollar earned below $<span class="math inline">\(137,700\)</span> goes to Social Security. Any earnings above $<span class="math inline">\(137,700\)</span> are <strong>not</strong> subject to the 6.2% tax.</p>
+<p>Put differently, once you exceed the Social Security wage base, your marginal tax rate <em>drops</em> from 31.65% to 25.45% (see red line). This is most easily seen with a chart. The below chart illustrates the marginal tax rate for a single filer using the 2020 tax brackets.</p>
+<p><img src="/post/fica/2020-08-15-fica-taxes_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>This means that for each dollar between $<span class="math inline">\(137,700\)</span> and $<span class="math inline">\(163,300\)</span>, you actually pay a <em>lower</em> marginal tax rate than you do when you make between $<span class="math inline">\(40,126\)</span> and $<span class="math inline">\(137,700\)</span>.</p>
+<p>Marginal tax rates are a little confusing, since they are the tax rate applied to an additional dollar that you earn. For a more intuitive illustration, trace out the average taxes rate. For each level of income, the average rate is the share of your income that goes to taxes.</p>
+<p><img src="/post/fica/2020-08-15-fica-taxes_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>As before, the red section illustrates that right above the Social Security wage base, you actually receive a <em>reduction</em> in your average tax rate when you make between $<span class="math inline">\(137,700\)</span> and $<span class="math inline">\(171,275\)</span>.</p>
+<p>This is an interesting kink in the tax code that I was not aware of previously. This kink has interesting economic implications. In particular, if a worker found it worth their time to work under a 31.65% marginal tax rate, they should be willing to work just as much (and probably more) when their marginal tax rate suddenly drops to 25.45% because they can keep more of their wages. This intuition means that if we examined the distribution of annual income, we might expect to see a sudden drop in the share of workers earning between $<span class="math inline">\(137,700\)</span> and $<span class="math inline">\(171,275\)</span>. However, this drop may not be easily seen in aggregate statistics for a few reasons. First, workers do not often have such fine control over their schedule and wages, so they cannot easily increase or decrease their total income, especially if they are salaried. Second, most workers (like myself) may not even be aware that such a kink exists in the tax code.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> However, there is one group that may be well positioned to respond to these incentives: self-employed business owners.</p>
+<p>In particular, self-employed business owners have better control over how much income they receive in salary (subject to FICA, Medicare, and income taxes) versus through “pass-through” profits (subject to income taxes). In all likelihood, if they can finely tune how their income is split between salary and profits, they would probably pay up to the Social Security wage base (to max out Social Security benefits) and then take any remaining income as profits, to avoid the extra 1.45% Medicare tax. While I do not have the tax data to test this hypothesis, it does seem to be a likely outcome for someone who can exert control over their wages and has a savvy accountant.</p>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Coincidentally, this is quite close to the top 10% of individual incomes.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>FICA stands for Federal Insurance Contributions Act and these taxes fund Social Security and Medicare.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>Honestly, I assumed everyone paid FICA, regardless of income.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
