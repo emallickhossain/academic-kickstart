@@ -39,4 +39,4 @@ superuser: true
 
 [Curriculum Vitae](/files/HossainCV.pdf)
 
-I am a financial economist at the Federal Reserve Bank of Philadelphia. My research interests are in applied microeconomics, consumer finance, and public economics. Previously, I worked as a Staff Economist for President Obama’s Council of Economic Advisers and for the Census Bureau. The views expressed here are my own and do not necessarily represent the views of the Federal Reserve Bank of Philadelphia or the Federal Reserve System. 
+I am a financial economist at the Federal Reserve Bank of Philadelphia. My research interests are in applied microeconomics, consumer finance and public economics. Previously, I worked as a Staff Economist for President Obama’s Council of Economic Advisers and for the Census Bureau. The views expressed here are my own and do not necessarily represent the views of the Federal Reserve Bank of Philadelphia or the Federal Reserve System. 
