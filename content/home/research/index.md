@@ -13,7 +13,7 @@ subtitle = ""
 
 [A World Without Borders Revisited: The Impact of Online Sales Tax Collection on Shopping and Search](/files/onlineShoppingAndSalesTax.pdf) 
 
-*Accepted at Journal of Economics & Management Strategy*
+*[Forthcoming](https://onlinelibrary.wiley.com/doi/10.1111/jems.12453) at Journal of Economics & Management Strategy*
 
 **Abstract:** For years, online retailers did not have to collect sales taxes at the time of sale. Over the past decade, states have passed laws to capture this lost revenue. I study the effect of closing the online sales tax loophole on online spending and search. Using online shopping data, sales taxes, and Amazon's staggered sales tax collection, I estimate that a household's tax elasticity is $-$1.9, implying a 13\% decline in Amazon's revenues upon sales tax collection. After Amazon collects sales taxes, households increase their spending on Amazon's taxed competitors, but not its untaxed competitors. I find no evidence that households change their search behavior or shift their spending offline. Collecting sales taxes online will help governments recapture lost taxes and increase online competition, but will not shift customers back offline.
 
