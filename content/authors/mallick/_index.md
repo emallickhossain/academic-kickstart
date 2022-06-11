@@ -17,7 +17,7 @@ interests:
 - Consumer Finance
 - Public Economics
 - Industrial Organization
-name: Mallick Hossain
+title: Mallick Hossain
 organizations:  
 - name: Federal Reserve Bank of Philadelphia
 role: Financial Economist

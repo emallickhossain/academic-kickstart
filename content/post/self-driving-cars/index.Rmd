@@ -5,8 +5,9 @@ date: '2018-03-06'
 slug: data-table-analysis
 draft: true
 output:
-  blogdown::html_page:
-    toc: true
+  html_document:
+    keep_md: yes
+    toc:true
 categories:
   - R
   - Public Finance

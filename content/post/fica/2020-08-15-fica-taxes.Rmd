@@ -16,6 +16,9 @@ image:
   focal_point: ''
   preview_only: no
 projects: []
+output:
+  html_document:
+    keep_md: yes
 ---
 
 Federal income tax rates *decrease* once you make more than \$$137,700$!^[Coincidentally, this is quite close to the top 10\% of individual incomes.] Payroll taxes are a fact of life, but one of those taxes often gets less attention than the rest: FICA.^[FICA stands for Federal Insurance Contributions Act and these taxes fund Social Security and Medicare.] As of 2020, employees contribute 6.2\% of their wages to Social Security and 1.45\% to Medicare. However, the 6.2\%  rates apply only to wages up to the "Social Security wage base" (\$$137,700$ in 2020). This means that 6.2 cents of every dollar earned below \$$137,700$ goes to Social Security. Any earnings above \$$137,700$ are **not** subject to the 6.2\% tax. 
